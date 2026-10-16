@@ -125,7 +125,6 @@ La documentación se genera automáticamente a partir del código. Estas son las
 
 Las capturas se tomaron desde `http://localhost:3000/api-docs` con **Try it out → Execute**. En cada una se ven los datos enviados, la Request URL, el Response body y el Code.
 
-> Reemplazar cada `capturas/XX.png` por la imagen correspondiente y completar la frase de verificación con el resultado obtenido.
 
 ### 7.1 Pantalla principal
 
