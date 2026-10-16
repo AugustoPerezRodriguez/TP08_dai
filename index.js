@@ -4,6 +4,10 @@ import cors     from "cors";
 
 import ProvinceRouter from "./src/controllers/province-controller.js"
 
+import swaggerUi from "swagger-ui-express";
+
+import swaggerFile from "./swagger-output.json" with { type: "json" };
+
 
 const app  = express();
 
@@ -31,6 +35,7 @@ app.use("/api/province", ProvinceRouter);
 // Inicio el Server y lo pongo a escuchar.
 
 //
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.listen(port, () => {
 

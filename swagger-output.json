@@ -1,0 +1,293 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API de Provincias",
+    "description": "Documentación de la API de Provincias",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Provincias",
+      "description": "Operaciones CRUD sobre las provincias argentinas"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/province/": {
+      "get": {
+        "tags": [
+          "Provincias"
+        ],
+        "summary": "Obtiene todas las provincias",
+        "description": "Devuelve un array con todas las provincias argentinas registradas en la base de datos. No requiere parámetros.",
+        "responses": {
+          "200": {
+            "description": "Operación exitosa. Devuelve el listado de provincias.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Province"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor (por ejemplo, falla en la conexión a la base de datos).",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Provincias"
+        ],
+        "summary": "Crea una nueva provincia",
+        "description": "Crea una provincia con los datos enviados en el body. El id lo genera la base de datos. Los campos name y full_name son obligatorios y deben tener al menos 3 caracteres.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos de la provincia a crear (sin id).",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewProvince"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Recurso creado. Devuelve la provincia creada con su id.",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta: name o full_name vacíos o con menos de 3 caracteres.",
+            "schema": {
+              "$ref": "#/definitions/BadRequest"
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Provincias"
+        ],
+        "summary": "Modifica una provincia existente",
+        "description": "Actualiza la provincia indicada por el id que viaja dentro del body. Se aplican las mismas validaciones que al crear (name y full_name obligatorios, mínimo 3 caracteres).",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Datos completos de la provincia, incluyendo el id de la que se quiere modificar.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Provincia actualizada. Devuelve la provincia con los datos nuevos.",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          },
+          "400": {
+            "description": "Solicitud incorrecta: name o full_name vacíos o con menos de 3 caracteres.",
+            "schema": {
+              "$ref": "#/definitions/BadRequest"
+            }
+          },
+          "404": {
+            "description": "No existe una provincia con el id enviado.",
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/province/{id}": {
+      "get": {
+        "tags": [
+          "Provincias"
+        ],
+        "summary": "Obtiene una provincia por id",
+        "description": "Busca y devuelve la provincia cuyo id coincide con el parámetro de ruta.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Id numérico de la provincia a buscar."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa. Devuelve la provincia encontrada.",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          },
+          "404": {
+            "description": "No existe una provincia con ese id.",
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Provincias"
+        ],
+        "summary": "Elimina una provincia por id",
+        "description": "Elimina la provincia cuyo id coincide con el parámetro de ruta y devuelve los datos de la provincia eliminada.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Id numérico de la provincia a eliminar."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa. Devuelve la provincia eliminada.",
+            "schema": {
+              "$ref": "#/definitions/Province"
+            }
+          },
+          "404": {
+            "description": "No existe una provincia con ese id.",
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            }
+          },
+          "500": {
+            "description": "Error interno del servidor.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Province": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Buenos Aires"
+        },
+        "full_name": {
+          "type": "string",
+          "example": "Provincia de Buenos Aires"
+        },
+        "latitude": {
+          "type": "number",
+          "example": -36.6769415
+        },
+        "longitude": {
+          "type": "number",
+          "example": -60.5588319
+        },
+        "display_order": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "NewProvince": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Catamarca"
+        },
+        "full_name": {
+          "type": "string",
+          "example": "Provincia de Catamarca"
+        },
+        "latitude": {
+          "type": "number",
+          "example": -28.4696
+        },
+        "longitude": {
+          "type": "number",
+          "example": -65.7795
+        },
+        "display_order": {
+          "type": "number",
+          "example": 3
+        }
+      },
+      "required": [
+        "name",
+        "full_name"
+      ]
+    },
+    "BadRequest": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "El campo 'name' debe tener al menos 3 caracteres."
+        }
+      }
+    },
+    "NotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Provincia no encontrada."
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Descripción del error interno."
+        }
+      }
+    }
+  }
+}
